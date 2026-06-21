@@ -1,19 +1,120 @@
-# CostForge — API / Platform Usage Dashboard
+# CostForge (CostForge)
 
-Self-hosted dashboard for tracking API usage and cost comparison across free and premium services.
+**Version:** v0.1  
+**Status:** Active Development  
+**Repository:** https://github.com/OneByJorah/CostForge
 
-## Verify locally
-1. `cd backend`
-2. `python3 -m venv .venv && source .venv/bin/activate`
-3. `pip install fastapi uvicorn sqlalchemy aiosqlite httpx orjson pydantic-settings`
-4. `uvicorn main:app --host 0.0.0.0 --port 9070`
-5. Health: http://localhost:9070/healthz
-6. Dashboard: http://localhost:9070/
+---
 
-## API
-- `POST /ingest`
-- `GET /api/summary?days=30`
-- `GET /api/usage?days=30`
+## Table of Contents
+
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Technology Stack](#technology-stack)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Service Management](#service-management)
+- [Project Structure](#project-structure)
+- [Screenshots](#screenshots)
+- [Contributing](#contributing)
+- [License](#license)
+- [Author](#author)
+
+---
+
+## Overview
+
+Cost calculation and cloud pricing estimation utility built from the J1 NOC Platform UI.
+
+---
+
+## Architecture
+
+Client → Local service (`CostForge`) → data/processing modules → output/api layer.
+Secrets and environment configuration are managed via environment files with restrictive permissions.
+
+---
+
+## Technology Stack
+
+|| Layer | Stack |
+|---|---|
+| Runtime | Linux (Ubuntu 22.04+) |
+| Primary Stack | HTML5 / Python / FastAPI |
+| VCS | Git + GitHub (`github.com/OneByJorah/CostForge`) |
+| Dev Port | Localhost / systemd service |
+
+---
+
+## Features
+
+- Operational dashboard and monitoring (per repo).
+- Exportable data / reports where supported.
+- Extensible service-based design.
+- Dark-themed UI where applicable.
+
+---
+
+## Getting Started
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/OneByJorah/CostForge.git
+cd CostForge
+
+# 2. Install dependencies
+# (see specific subproject docs)
+
+# 3. Start the service
+# (see Service Management below)
+```
+
+---
+
+## Service Management
+
+```bash
+# Start the service (example)
+sudo systemctl start CostForge.service
+sudo systemctl enable CostForge.service
+```
+
+Access the service via your configured localhost port or reverse proxy.
+
+---
+
+## Project Structure
+
+```
+CostForge/
+├── README.md
+├── (additional project files)
+```
+
+---
 
 ## Screenshots
-- `docs/screenshots/costforge-dashboard.html`
+
+All screenshots are live captures from the local dev instance.
+
+_(Screenshots will be added after build/run capture.)_
+
+---
+
+## Contributing
+
+1. Create a feature branch off `main`.
+2. Follow the existing code style.
+3. Submit a PR with description and screenshots for UI changes.
+
+---
+
+## License
+
+MIT
+
+---
+
+## Author
+
+Built by **Jhonattan L. Jimenez**.
