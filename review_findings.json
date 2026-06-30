@@ -1,0 +1,18 @@
+[
+  {
+    "id": "CF-001",
+    "file": "docker-compose.yml",
+    "line_range": "1-80",
+    "issue": "Stack cannot be started on this host because the Docker daemon is not running.",
+    "severity": "high",
+    "suggested_fix": "Start Docker Engine on the host before running `docker compose up -d`."
+  },
+  {
+    "id": "CF-002",
+    "file": "README.md",
+    "line_range": "118-139",
+    "issue": "README Getting Started does not clearly state that Docker must be running before `docker compose up -d`.",
+    "severity": "medium",
+    "suggested_fix": "Add an explicit Docker daemon check before the launch commands."
+  }
+]

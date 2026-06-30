@@ -128,13 +128,17 @@ CostForge is a **cloud cost estimation and pricing dashboard** that aggregates p
 git clone https://github.com/OneByJorah/CostForge.git
 cd CostForge
 
-# 2. Configure (optional - defaults work)
+# 2. Verify Docker daemon is running
+docker info >/dev/null 2>&1 || echo "Docker daemon is not running"
+docker compose version
+
+# 3. Configure (optional - defaults work)
 cp .env.example .env  # if exists, else create
 
-# 3. One-command deploy
+# 4. One-command deploy
 docker compose up -d
 
-# 4. Verify
+# 5. Verify
 curl http://localhost:8090/healthz
 ```
 
