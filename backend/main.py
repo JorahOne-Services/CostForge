@@ -1,10 +1,15 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, Response
-from fastapi.middleware.cors import CORSMiddleware
-from pathlib import Path
-import json, sqlite3, os, asyncio, time, re
+import asyncio
+import json
+import os
+import sqlite3
+import time
 from datetime import datetime, timedelta
+from pathlib import Path
+
 import httpx
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse, JSONResponse, Response
 from starlette.websockets import WebSocket
 
 APP_DIR = Path(__file__).parent
@@ -96,7 +101,7 @@ def init_db():
                 status_code integer default 0,
                 estimated integer default 0,
                 latency_ms integer default 0
-            )"""
+            )""",
         )
         c.execute(
             """create table if not exists events(
@@ -104,7 +109,7 @@ def init_db():
                 ts text,
                 kind text,
                 detail text
-            )"""
+            )""",
         )
         c.execute("create index if not exists idx_usage_ts on usage(ts)")
         c.execute("create index if not exists idx_usage_source on usage(source)")
@@ -280,15 +285,15 @@ async def proxy_handler(request: Request, provider_id: str, path: str):
         preset = provider.get("responseFormat", "generic")
         if preset == "openai":
             t_in, t_out, model, estimated = _parse_openai_usage(
-                response_body.decode("utf-8", errors="ignore"), body
+                response_body.decode("utf-8", errors="ignore"), body,
             )
         elif preset == "ollama":
             t_in, t_out, model, estimated = _parse_ollama_usage(
-                response_body.decode("utf-8", errors="ignore"), body
+                response_body.decode("utf-8", errors="ignore"), body,
             )
         else:
             t_in, t_out, model, estimated = _parse_generic_usage(
-                response_body.decode("utf-8", errors="ignore"), body
+                response_body.decode("utf-8", errors="ignore"), body,
             )
         premium_model = _premium_equivalent(provider, model)
         premium_cost = _premium_cost(premium_model, t_in, t_out)
@@ -377,7 +382,7 @@ def usage(days: int = 30):
                 "output_tokens": r["output_tokens"],
                 "requests": r["requests"],
                 "meta": json.loads(r["meta"] or "{}"),
-            }
+            },
         )
     return JSONResponse(out)
 
@@ -410,7 +415,7 @@ def summary(days: int = 7):
                 "output_tokens": outp or 0,
                 "premium_equivalent": prem or 0.0,
                 "effective_cost": 0.0,
-            }
+            },
         )
     return {"days": days, "total_requests": total_req, "items": chart, "pricing_refs": _pricing}
 
@@ -427,7 +432,7 @@ def api_stats():
                 coalesce(sum(input_tokens+output_tokens),0) as total_tokens,
                 coalesce(sum(premium_cost_usd),0) as premium_cost_usd,
                 coalesce(sum(case when estimated=1 then 1 else 0 end),0) as estimated_count
-            from usage"""
+            from usage""",
         ).fetchone()
         by_provider = c.execute(
             """select
@@ -438,7 +443,7 @@ def api_stats():
                 coalesce(sum(input_tokens),0) as tokens_in,
                 coalesce(sum(output_tokens),0) as tokens_out,
                 coalesce(sum(premium_cost_usd),0) as premium_cost_usd
-            from usage group by source order by premium_cost_usd desc"""
+            from usage group by source order by premium_cost_usd desc""",
         ).fetchall()
     return {"totals": dict(totals), "byProvider": [dict(r) for r in by_provider]}
 
@@ -448,7 +453,7 @@ def api_recent(limit: int = 50):
     limit = max(1, min(int(limit), 500))
     with _db() as c:
         rows = c.execute(
-            "select * from usage order by ts desc limit ?", (limit,)
+            "select * from usage order by ts desc limit ?", (limit,),
         ).fetchall()
     return [dict(r) for r in rows]
 
@@ -481,7 +486,7 @@ async def api_providers():
                 "proxyPrefix": p.get("proxyPrefix"),
                 "baseUrl": p.get("baseUrl"),
                 "notes": p.get("notes"),
-            }
+            },
         )
     return out
 

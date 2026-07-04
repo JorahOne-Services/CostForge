@@ -1,4 +1,6 @@
-import json, os, urllib.request
+import json
+import os
+import urllib.request
 
 BASE_URL = os.environ.get("COSTFORGE_ENDPOINT", "http://127.0.0.1:17890/ingest")
 
@@ -19,7 +21,7 @@ def _post(payload):
     try:
         data = json.dumps(payload).encode()
         req = urllib.request.Request(
-            BASE_URL, data=data, headers={"Content-Type": "application/json"}, method="POST"
+            BASE_URL, data=data, headers={"Content-Type": "application/json"}, method="POST",
         )
         urllib.request.urlopen(req, timeout=2)
     except Exception:

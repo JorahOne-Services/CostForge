@@ -1,5 +1,6 @@
-import json, os, urllib.request
-
+import json
+import os
+import urllib.request
 
 BASE_URL = os.environ.get("COSTFORGE_ENDPOINT", "http://127.0.0.1:17890/ingest")
 

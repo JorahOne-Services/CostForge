@@ -1,5 +1,5 @@
-import json
 from datetime import datetime
+
 
 def adapt(event: dict) -> dict:
     data = {
