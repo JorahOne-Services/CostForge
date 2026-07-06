@@ -271,8 +271,8 @@ async def proxy_handler(request: Request, provider_id: str, path: str):
     response_body = b""
     headers_out: dict[str, str] = {}
     try:
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            resp = await client.request(method, url, headers=headers, content=body)
+        async with httpx.AsyncClient(timeout=60.0) as http_client:
+            resp = await http_client.request(method, url, headers=headers, content=body)
             status_code = resp.status_code
             headers_out = dict(resp.headers)
             response_body = resp.content
